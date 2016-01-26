@@ -1,5 +1,5 @@
 $(document).ready(function(){
-		for (var i = 1; i <= 5000; i++) {
+		for (var i = 5000; i > 0; i--) {
 	   //insert new divs (fifty rows of one hundred cells each)
 		$("<div id=" + "\"" + i + "\"" + " class=\"cell\"></div>").insertAfter("#empty"); 
 		}
@@ -9,6 +9,7 @@ $(document).ready(function(){
 						var rando = Math.floor((Math.random() * 5000) + 1);
 						$("#" + rando).addClass("live"); 
 				}
+			//figure out if cells have living neighbors
 			
 			});
 });
