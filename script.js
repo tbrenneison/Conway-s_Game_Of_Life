@@ -10,7 +10,7 @@ $(document).ready(function(){
 						$("#" + rando).removeClass("dead").addClass("live"); 
 				}
 				
-			//for any given cell, find its neighbors
+				//for any given cell, find its neighbors
 				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
 				//for example the first row
 				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
@@ -45,55 +45,100 @@ $(document).ready(function(){
 					return liveNeighborCounter; 
 				}
 				
-					
-					var counter = 1;
-					//setInterval repeats a function at given intervals in ms 
-					var v = setInterval(function(){
-						var cell = document.getElementById(counter);
-						//see if the cell is alive
-						if($(cell).hasClass("live") == true)
-							{
-								//check to see how many of the cell's neighbors are alive 
-								var numberOfLivingNeighbors = findLiveNeighbors(counter); 
-								//do something about it 
-								if(numberOfLivingNeighbors < 2)
-									{
-										//cell dies with less than 2 living neighbors
-										$(cell).removeClass("live").addClass("dead"); 
-									} 
-								else if(numberOfLivingNeighbors == 2 || numberOfLivingNeighbors == 3)
-									{
-										//cell lives on but does not reproduce
-										//do nothing
-									}
-								else if(numberOfLivingNeighbors > 3)
-									{
-										$(cell).removeClass("live").addClass("dead"); 
-									}
-							}
-						else //cell is dead... but...
-							{
-								if(numberOfLivingNeighbors == 3)
-								{
-									//dead cell with exactly three living neighbros becomes alive
-									$(cell).removeClass("dead").addClass("live"); 
-								}
-							}
-						counter++;
-					}, 1);
-					
-					//stop button
-					$("#stopbutton").click(function(){
-					clearInterval(v);
-					});
-					//ends the interval after 5000 cells if button isn't pressed
-					/*
-					if(counter == 5000)
+				//find state in current generation
+				function findCellState(cellId)
+				{
+						if($("#" + cellId).hasClass("live") == true)
 						{
-						clearInterval(v); 
+							return("alive");
 						}
-					*/
-
+						else
+						{
+							return("dead"); 
+						}
+				}
+				
+				//determine state in next generation
+				function findNextCellState()
+				{
+					for(var s = 1; s <=5000; s++)
+					{
+					  var thisCell = document.getElementById(s);
+					  var cellNeighborCount = findLiveNeighbors(s); 
+					  
+						if($(thisCell).hasClass("live") == true)
+						{
+							if(cellNeighborCount < 2)
+							{
+								//if less than two living neighbors, cell dies
+								$(thisCell).addClass("will_die");
+							}
+							else if(cellNeighborCount == 2 || cellNeighborCount == 3)
+							{
+								//if 2 or 3 living neighbors, cell lives
+								$(thisCell).addClass("will_live");
+							}
+							else
+							{
+								//if more than three living neighbors, cell dies
+								$(thisCell).addClass("will_die");
+							}
+						}
+						else
+						{
+							if(cellNeighborCount == 3)
+							{
+								//dead cell with three living neighbors becomes alive 
+								$(thisCell).addClass("will_live");
+							}
+						}
+					}
+				}
+				
+				function runNextGeneration()
+				{
+					for(var z = 1; z <= 5000; z++)
+					{
+						var thisCell = document.getElementById(z);
+						if($(thisCell).hasClass("will_live") == true)
+						{
+							$(thisCell).removeClass("live dead will_live will_die").addClass("live");
+						}
+						else
+						{
+							$(thisCell).removeClass("live dead will_live will_die").addClass("dead");
+						}
+					}
+				}
+				
+				function checkIfLiveCells()
+				{
+					var cellCount = 0; 
+					for(var z = 1; z <= 5000; z++)
+					{
+						var thisCell = document.getElementById(z);
+						if($(thisCell).hasClass("live") == true)
+						{
+							cellCount++;
+						}
+					}
+					if(cellCount > 0)
+					{
+						return true; 
+					}
+					else
+					{
+						return false;
+					}
+				}
+				
+				$("#stopbutton").click(function(){
+					findNextCellState();
+					runNextGeneration();
+				});
+				
+			
+				
 			});
 });
 
