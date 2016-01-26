@@ -9,12 +9,13 @@ $(document).ready(function(){
 						var rando = Math.floor((Math.random() * 5000) + 1);
 						$("#" + rando).removeClass("dead").addClass("live"); 
 				}
+				
 			//for any given cell, find its neighbors
 				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
 				//for example the first row
 				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
 				
-				//find a cell's number of living neighbors 
+				//function to find a cell's number of living neighbors 
 				function findLiveNeighbors(cellId)
 				{
 					var liveNeighborCounter = 0; 
@@ -44,6 +45,61 @@ $(document).ready(function(){
 					return liveNeighborCounter; 
 				}
 				
+					
+					var counter = 1;
+					//setInterval repeats a function at given intervals in ms 
+					var v = setInterval(function(){
+						var cell = document.getElementById(counter);
+						//see if the cell is alive
+						if($(cell).hasClass("live") == true)
+							{
+								//check to see how many of the cell's neighbors are alive 
+								var numberOfLivingNeighbors = findLiveNeighbors(counter); 
+								//do something about it 
+								if(numberOfLivingNeighbors < 2)
+									{
+										//cell dies with less than 2 living neighbors
+										$(cell).removeClass("live").addClass("dead"); 
+									} 
+								else if(numberOfLivingNeighbors == 2 || numberOfLivingNeighbors == 3)
+									{
+										//cell lives on but does not reproduce
+										//do nothing
+									}
+								else if(numberOfLivingNeighbors > 3)
+									{
+										$(cell).removeClass("live").addClass("dead"); 
+									}
+							}
+						else //cell is dead... but...
+							{
+								if(numberOfLivingNeighbors == 3)
+								{
+									//dead cell with exactly three living neighbros becomes alive
+									$(cell).removeClass("dead").addClass("live"); 
+								}
+							}
+						counter++;
+					}, 1);
+					
+					//stop button
+					$("#stopbutton").click(function(){
+					clearInterval(v);
+					});
+					//ends the interval after 5000 cells if button isn't pressed
+					/*
+					if(counter == 5000)
+						{
+						clearInterval(v); 
+						}
+					*/
+
+			});
+});
+
+//EXTRA CODE I WAS MESSING WITH AT THE BEGINNING 
+
+/*
 				//gets a random cell
 				var randotwo = Math.floor((Math.random() * 5000) +1); 
 					$("#" + randotwo).removeClass("live dead").addClass("green"); 
@@ -72,34 +128,4 @@ $(document).ready(function(){
 						var belowright = below + 1; 
 							$("#" + belowright).removeClass("live dead").addClass("blue"); 
 					}
-					
-					var counter = 1;
-					//setInterval repeats a function at given intervals in ms 
-					var v = setInterval(function(){
-						var cell = document.getElementById(counter);
-						//see if the cell is alive
-						if($(cell).hasClass("live") == true)
-							{
-								//check to see how many of the cell's neighbors are alive 
-								console.log(findLiveNeighbors(counter) + " living neighbors"); 
-							}
-								//just to make sure, this is all getting logged in the console
-							else
-							{
-								console.log("dead cell");
-							}
-						counter++;
-					}, 1);
-					
-					//stop button
-					$("#stopbutton").click(function(){
-					clearInterval(v);
-					});
-					//ends the interval after 5000 cells if button isn't pressed
-					if(counter == 5000)
-						{
-						clearInterval(v); 
-						}
-
-			});
-});
+*/
