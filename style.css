@@ -1,0 +1,25 @@
+.cell {
+	width: 10px; 
+	height: 10px; 
+	border: 1px solid black;
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	float: left;
+}
+
+.cellcontainer { 
+	width: 1000px; 
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+	
+.live {
+	background-color: red;
+}
+
+.dead {
+	background-color: white;
+}
