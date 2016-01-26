@@ -13,22 +13,30 @@ $(document).ready(function(){
 				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
 				//for example the first row
 				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
-			
 				var randotwo = Math.floor((Math.random() * 5000) +1); 
-				$("#" + randotwo).removeClass("live dead").addClass("green"); 
+					$("#" + randotwo).removeClass("live dead").addClass("green"); 
 				var above = randotwo - 100; 
-				$("#" + above).removeClass("live dead").addClass("blue"); 
+					$("#" + above).removeClass("live dead").addClass("blue"); 
 				var below = randotwo + 100; 
-				$("#" + below).removeClass("live dead").addClass("blue"); 
+					$("#" + below).removeClass("live dead").addClass("blue"); 
 				if((randotwo - 1) % 100 != 0)
 					{
 						var left = randotwo - 1; 
-						$("#" + left).removeClass("live dead").addClass("blue"); 
+							$("#" + left).removeClass("live dead").addClass("blue"); 
+						var belowleft = below - 1; 
+							$("#" + belowleft).removeClass("live dead").addClass("blue"); 
+						var aboveleft = above - 1; 
+							$("#" + aboveleft).removeClass("live dead").addClass("blue"); 
 					}
 				if(randotwo % 100 != 0)
 					{
 						var right = randotwo + 1; 
-						$("#" + right).removeClass("live dead").addClass("blue"); 
+							$("#" + right).removeClass("live dead").addClass("blue");
+						var aboveright = above + 1; 
+							$("#" + aboveright).removeClass("live dead").addClass("blue"); 
+						var belowright = below + 1; 
+							$("#" + belowright).removeClass("live dead").addClass("blue"); 
 					}
+
 			});
 });
