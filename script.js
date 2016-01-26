@@ -13,12 +13,46 @@ $(document).ready(function(){
 				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
 				//for example the first row
 				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
+				
+				//find a cell's number of living neighbors 
+				function findLiveNeighbors(cellId)
+				{
+					var liveNeighborCounter = 0; 
+					var aboveCell = cellId - 100; 
+					var belowCell = cellId + 100; 
+					if((cellId - 1) % 100 != 0)
+						{
+							var leftCell = cellId - 1; 
+							var belowleftCell = belowCell - 1; 
+							var aboveleftCell = aboveCell - 1; 
+						}
+					if(cellId % 100 != 0)
+						{
+							var rightCell = cellId + 1; 
+							var aboverightCell = aboveCell + 1; 		
+							var belowrightCell = belowCell + 1; 
+							}
+					var allNeighbors = [aboveCell, belowCell, leftCell, belowleftCell, aboveleftCell, 
+						rightCell, aboverightCell, belowrightCell];
+					for (var p = 0; p < allNeighbors.length; p++)
+						{
+							if($("#" + allNeighbors[p]).hasClass("live") == true)
+							{
+								liveNeighborCounter++; 
+							}
+						}
+					return liveNeighborCounter; 
+				}
+				
+				//gets a random cell
 				var randotwo = Math.floor((Math.random() * 5000) +1); 
 					$("#" + randotwo).removeClass("live dead").addClass("green"); 
+					//don't worry above above and below going off grid because the cells don't exist 
 				var above = randotwo - 100; 
 					$("#" + above).removeClass("live dead").addClass("blue"); 
 				var below = randotwo + 100; 
-					$("#" + below).removeClass("live dead").addClass("blue"); 
+					$("#" + below).removeClass("live dead").addClass("blue");
+					//find cells to the left 
 				if((randotwo - 1) % 100 != 0)
 					{
 						var left = randotwo - 1; 
@@ -28,6 +62,7 @@ $(document).ready(function(){
 						var aboveleft = above - 1; 
 							$("#" + aboveleft).removeClass("live dead").addClass("blue"); 
 					}
+					//find cells to the right
 				if(randotwo % 100 != 0)
 					{
 						var right = randotwo + 1; 
@@ -37,6 +72,34 @@ $(document).ready(function(){
 						var belowright = below + 1; 
 							$("#" + belowright).removeClass("live dead").addClass("blue"); 
 					}
+					
+					var counter = 1;
+					//setInterval repeats a function at given intervals in ms 
+					var v = setInterval(function(){
+						var cell = document.getElementById(counter);
+						//see if the cell is alive
+						if($(cell).hasClass("live") == true)
+							{
+								//check to see how many of the cell's neighbors are alive 
+								console.log(findLiveNeighbors(counter) + " living neighbors"); 
+							}
+								//just to make sure, this is all getting logged in the console
+							else
+							{
+								console.log("dead cell");
+							}
+						counter++;
+					}, 1);
+					
+					//stop button
+					$("#stopbutton").click(function(){
+					clearInterval(v);
+					});
+					//ends the interval after 5000 cells if button isn't pressed
+					if(counter == 5000)
+						{
+						clearInterval(v); 
+						}
 
 			});
 });
