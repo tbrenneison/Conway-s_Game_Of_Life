@@ -1,3 +1,9 @@
+/*
+Game is played on a 1000 pixel wide grid with cells of 10x10px each.  The grid is not infinite, although
+it should be... I just wanted simple math.  The script is also jerky and slow.  I'm sure there's much better
+ways to go about this, I just wanted to see if I could actually do it.
+*/
+
 $(document).ready(function(){
 		for (var i = 5000; i > 0; i--) {
 	   //insert new divs (fifty rows of one hundred cells each)
@@ -9,11 +15,6 @@ $(document).ready(function(){
 						var rando = Math.floor((Math.random() * 5000) + 1);
 						$("#" + rando).removeClass("dead").addClass("live"); 
 				}
-				
-				//for any given cell, find its neighbors
-				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
-				//for example the first row
-				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
 				
 				//function to find a cell's number of living neighbors 
 				function findLiveNeighbors(cellId)
@@ -113,6 +114,12 @@ $(document).ready(function(){
 });
 
 //EXTRA CODE I WAS MESSING WITH AT THE BEGINNING 
+
+
+				//for any given cell, find its neighbors
+				//a row of cells is n to n+99 with n = 1 to start then  n = (n + 100) to start a new row 
+				//for example the first row
+				//starts with cell 1 and ends with cell 100, row two starts with cell 101 and ends with cell 200
 
 /*
 				//gets a random cell
