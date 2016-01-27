@@ -5,7 +5,7 @@ $(document).ready(function(){
 		}
 			$("#startbutton").one("click",function(){
 			//randomly assign "live" cells
-				for (var x = 1; x <= 1000; x++) {
+				for (var x = 1; x <= 800; x++) {
 						var rando = Math.floor((Math.random() * 5000) + 1);
 						$("#" + rando).removeClass("dead").addClass("live"); 
 				}
@@ -44,20 +44,7 @@ $(document).ready(function(){
 						}
 					return liveNeighborCounter; 
 				}
-				
-				//find state in current generation
-				function findCellState(cellId)
-				{
-						if($("#" + cellId).hasClass("live") == true)
-						{
-							return("alive");
-						}
-						else
-						{
-							return("dead"); 
-						}
-				}
-				
+								
 				//determine state in next generation
 				function findNextCellState()
 				{
@@ -111,35 +98,18 @@ $(document).ready(function(){
 					}
 				}
 				
-				function checkIfLiveCells()
-				{
-					var cellCount = 0; 
-					for(var z = 1; z <= 5000; z++)
-					{
-						var thisCell = document.getElementById(z);
-						if($(thisCell).hasClass("live") == true)
-						{
-							cellCount++;
-						}
-					}
-					if(cellCount > 0)
-					{
-						return true; 
-					}
-					else
-					{
-						return false;
-					}
-				}
+				//use setInterval to call functions every 10ms
+				var refreshId = setInterval( function() 
+		     	 	{
+						findNextCellState();
+						runNextGeneration();
+		     	 	}, 10);
 				
+				//stop button fires clearInterval
 				$("#stopbutton").click(function(){
-					findNextCellState();
-					runNextGeneration();
+					clearInterval(refreshId)
 				});
-				
-			
-				
-			});
+		});
 });
 
 //EXTRA CODE I WAS MESSING WITH AT THE BEGINNING 
